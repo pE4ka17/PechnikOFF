@@ -1,0 +1,56 @@
+<?php
+    // Подключение к базе данных MySQL
+    $servername = "localhost";
+    $username = "пользователь";
+    $password = "пароль";
+    $dbname = "имя_базы_данных";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Проверка соединения
+    if ($conn->connect_error) {
+        die("Ошибка подключения: " . $conn->connect_error);
+    }
+
+    // Запрос списка таблиц базы данных
+    $sql = "SHOW TABLES";
+    $result = $conn->query($sql);
+
+    // Проверка наличия таблиц
+    if ($result->num_rows > 0) {
+        // Вывод списка таблиц в табличном виде
+        echo "<table>";
+        echo "<tr><th>Таблицы</th></tr>";
+
+        // Цикл по таблицам
+        while($row = $result->fetch_assoc()) {
+            $table = $row["Tables_in_" . $dbname];
+            
+            // Вывод каждой таблицы в виде строки таблицы
+            echo "<tr><td><a href='#' onclick='showColumns(\"$table\")'>$table</a></td></tr>";
+        }
+
+        echo "</table>";
+    } else {
+        echo "В базе данных нет таблиц.";
+    }
+
+    $conn->close();
+?>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    // Функция для вывода столбцов выбранной таблицы
+    function showColumns(table) {
+        // AJAX-запрос для получения столбцов
+        $.ajax({
+            url: "getColumns.php", // Файл PHP для обработки запроса
+            type: "POST",
+            data: { table: table }, // Передача имени таблицы через POST
+            success: function(response) {
+                // Вывод столбцов в блок с id "columnsContainer"
+                $("#columnsContainer").html(response);
+            }
+        });
+    }
+</script>
