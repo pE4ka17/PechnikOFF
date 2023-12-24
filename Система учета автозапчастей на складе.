@@ -1,0 +1,67 @@
+HTML
+<form action="save_part.php" method="POST">
+    <label for="part_name">Наименование:</label>
+    <input type="text" name="part_name" id="part_name" required>
+
+    <label for="arrival_date">Дата поступления:</label>
+    <input type="date" name="arrival_date" id="arrival_date" required>
+
+    <label for="supplier">Поставщик:</label>
+    <select name="supplier" id="supplier" required>
+        <option value="">Выберите поставщика</option>
+        <!-- Здесь можно использовать PHP для заполнения выпадающего списка данными из таблицы поставщиков -->
+    </select>
+
+    <label for="manufacturer">Производитель:</label>
+    <select name="manufacturer" id="manufacturer" required>
+        <option value="">Выберите производителя</option>
+        <!-- Здесь можно использовать PHP для заполнения выпадающего списка данными из таблицы производителей -->
+    </select>
+
+    <label for="part_code">Код:</label>
+    <input type="text" name="part_code" id="part_code" required>
+
+    <label for="purchase_price">Цена закупки (в евро):</label>
+    <input type="number" name="purchase_price" id="purchase_price" step="0.01" required>
+
+    <label for="retail_price">Цена розницы (в рублях):</label>
+    <input type="number" name="retail_price" id="retail_price" step="0.01" required>
+
+    <input type="submit" value="Сохранить">
+</form>
+PHP
+<?php
+    // Подключение к базе данных MySQL
+    $servername = "localhost";
+    $username = "пользователь";
+    $password = "пароль";
+    $dbname = "имя_базы_данных";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Проверка соединения
+    if ($conn->connect_error) {
+        die("Ошибка подключения: " . $conn->connect_error);
+    }
+
+    // Получение данных из формы
+    $part_name = $_POST['part_name'];
+    $arrival_date = $_POST['arrival_date'];
+    $supplier_id = $_POST['supplier'];
+    $manufacturer_id = $_POST['manufacturer'];
+    $part_code = $_POST['part_code'];
+    $purchase_price = $_POST['purchase_price'];
+    $retail_price = $_POST['retail_price'];
+
+    // SQL-запрос для вставки данных в таблицу "Запчасти"
+    $sql = "INSERT INTO parts (наименование, дата_поступления, поставщик_id, производитель_id, код, цена_закупки, цена_розницы)
+            VALUES ('$part_name', '$arrival_date', '$supplier_id', '$manufacturer_id', '$part_code', '$purchase_price', '$retail_price')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Данные о запчасти успешно сохранены.";
+    } else {
+        echo "Ошибка сохранения данных: " . $conn->error;
+    }
+
+    $conn->close();
+?>
