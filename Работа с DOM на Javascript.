@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Страница с таблицей и формой</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <form id="myForm">
+      <div class="form-group">
+        <label for="inputName">Имя:</label>
+        <input type="text" class="form-control" id="inputName" placeholder="Введите имя">
+      </div>
+      <div class="form-group">
+        <label for="inputEmail">Email:</label>
+        <input type="email" class="form-control" id="inputEmail" placeholder="Введите email">
+      </div>
+      <div class="form-group">
+        <label for="inputAge">Возраст:</label>
+        <input type="number" class="form-control" id="inputAge" placeholder="Введите возраст">
+      </div>
+      <div class="form-group">
+        <label for="selectOption">Выберите опцию:</label>
+        <select class="form-control" id="selectOption">
+          <option>Опция 1</option>
+          <option>Опция 2</option>
+          <option>Опция 3</option>
+          <option>Опция 4</option>
+          <option>Опция 5</option>
+          <option>Опция 6</option>
+          <option>Опция 7</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Добавить в таблицу</button>
+    </form>
+    
+    <table id="dataTable" class="table mt-3">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Email</th>
+          <th>Возраст</th>
+          <th>Опция</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#myForm').submit(function(e) {
+        e.preventDefault(); // предотвращаем отправку формы
+        var name = $('#inputName').val();
+        var email = $('#inputEmail').val();
+        var age = $('#inputAge').val();
+        var option = $('#selectOption').val();
+        
+        var newRow = '<tr><td>' + name + '</td><td>' + email + '</td><td>' + age + '</td><td>' + option + '</td></tr>';
+        $('#dataTable tbody').append(newRow);
+        
+        // Очищаем поля формы после добавления в таблицу
+        $('#inputName').val('');
+        $('#inputEmail').val('');
+        $('#inputAge').val('');
+        $('#selectOption').val('');
+      });
+    });
+  </script>
+</body>
+</html>
