@@ -1,0 +1,20 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    // Обработчик события клика на таблице
+    $("table tr").click(function(){
+        var tableName = $(this).children("td").text();
+        
+        // Запрос на получение столбцов выбранной таблицы
+        $.ajax({
+            url: "get_columns.php",
+            type: "POST",
+            data: { table: tableName },
+            success: function(response){
+                // Отображение столбцов таблицы под выбранной таблицей
+                $(response).insertAfter($(this).closest("tr"));
+            }
+        });
+    });
+});
+</script>
