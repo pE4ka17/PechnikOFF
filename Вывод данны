@@ -1,0 +1,40 @@
+Вывод данных:
+SELECT
+    автозапчасти.id,
+    автозапчасти.название,
+    автозапчасти.дата_поступления,
+    поставщики.название AS поставщик,
+    производители.название AS производитель,
+    автозапчасти.код,
+    автозапчасти.цена_закупки,
+    автозапчасти.цена_розницы
+FROM
+    автозапчасти
+    JOIN поставщики ON автозапчасти.поставщик_id = поставщики.id
+    JOIN производители ON автозапчасти.производитель_id = производители.id;
+SQL-файл:
+Создание таблицы "Автозапчасти"
+CREATE TABLE IF NOT EXISTS `Автозапчасти` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `название` VARCHAR(255) NOT NULL,
+  `дата_поступления` DATE NOT NULL,
+  `поставщик_id` INT NOT NULL,
+  `производитель_id` INT NOT NULL,
+  `код` VARCHAR(50) NOT NULL,
+  `цена_закупки` DECIMAL(10, 2) NOT NULL,
+  `цена_розницы` DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (`поставщик_id`) REFERENCES `Поставщики`(`id`),
+  FOREIGN KEY (`производитель_id`) REFERENCES `Производители`(`id`)
+) ENGINE=InnoDB;
+
+-- Создание таблицы "Поставщики"
+CREATE TABLE IF NOT EXISTS `Поставщики` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `название` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
+
+-- Создание таблицы "Производители"
+CREATE TABLE IF NOT EXISTS `Производители` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `название` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
